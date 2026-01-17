@@ -1,0 +1,36 @@
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# 虚拟环境
+venv/
+.env/
+.venv/
+env/
+
+# pip / build
+pip-wheel-metadata/
+dist/
+build/
+*.egg-info/
+
+# ===== FastAPI / Uvicorn =====
+*.log
+
+# ===== PyCharm =====
+.idea/
+*.iml
+
+# ===== macOS =====
+.DS_Store
+
+# ===== Test / cache =====
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ===== Editor =====
+.vscode/
