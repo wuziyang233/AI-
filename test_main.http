@@ -15,3 +15,16 @@ GET http://127.0.0.1:8000/mail/test?email=1827074175@qq.com
 ###
 
 GET http://127.0.0.1:8000/auth/code?email=1827074175@qq.com
+
+###
+
+POST http://127.0.0.1:8000/auth/register
+Content-Type: application/json
+
+{
+  "email": "1827074175@qq.com",
+  "username": "wzy",
+  "password": "123456",
+  "confirm_password": "123456",
+  "code": "5236"
+}
