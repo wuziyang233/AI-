@@ -41,8 +41,10 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:8000/name/
+### 使用智能体生成名字（已登录）
+POST http://127.0.0.1:8000/name
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxIiwic3ViIjoiMSIsImV4cCI6MTc3MDI5NDQxNH0.fo2bCd0QyUMoeg7y5HEY4n0zlc61xxNbpSvoU0AG7G0
 
 {
   "surname": "张",
