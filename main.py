@@ -6,10 +6,12 @@ from dependencies import get_mail
 from aiosmtplib import SMTPResponseException
 
 from routers.auth_router import router as auth_router
+from routers.name_router import router as name_router
 
 
 app = FastAPI()
 app.include_router(auth_router)
+app.include_router(name_router)
 
 
 @app.get("/")
