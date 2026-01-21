@@ -2,19 +2,25 @@ import random
 import string
 from typing import Annotated
 
+import jwt
 from aiosmtplib import SMTPResponseException
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.params import Depends
 from fastapi_mail import FastMail, MessageSchema, MessageType
 from pydantic import EmailStr
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, session
 
 from dependencies import get_mail, get_session
 from repository.user_repo import EmailCodeRepository, UserRepository
 from schemas import ResponseOut
-from schemas.user import UserRegisterIn, UserCreateSchema
+from schemas.user import UserRegisterIn, UserCreateSchema, UserLoginIn, UserLogOut, UserSchema
+from cores.auth import AuthHandler
+
+# 创建对戏那个（实例）
+auth_handler = AuthHandler()
 
 router = APIRouter(prefix="/auth", tags=["auth"])
+
 
 @router.get("/code", response_model=ResponseOut)
 async def get_code(
@@ -71,5 +77,30 @@ async def register(
     except Exception as e:
         raise HTTPException(500, str(e))
     return ResponseOut()
+
+@router.post("/login", response_model=UserLogOut)
+async def login(
+    data: UserLoginIn,
+    session: AsyncSession = Depends(get_session)
+):
+    # 操作数据库，查一下用户是否存在
+    user_repo = UserRepository(session)
+    user = await user_repo.get_by_email(str(data.email))
+    if not user:
+        raise HTTPException(400, "用户不存在")
+    check = user.check_password(data.password)
+    if not check:
+        raise HTTPException(400,"密码或邮箱错误")
+
+    # 校验通过生成jwt
+    token = auth_handler.encode_login_token(user_id=user.id)
+    return {
+        "user": user,
+        "token": token["access_token"]
+    }
+
+
+
+
 
 
